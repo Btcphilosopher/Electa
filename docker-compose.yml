@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: electa_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER:     electa
+      POSTGRES_PASSWORD: electa
+      POSTGRES_DB:       electa
+    ports:
+      - "5432:5432"
+    volumes:
+      - electa_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U electa"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: electa_api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL:               postgresql+asyncpg://electa:electa@postgres:5432/electa
+      SECRET_KEY:                 "change-me-for-production"
+      REQUIRE_CRYPTO_SIGNATURES:  "false"
+      SCHEDULER_INTERVAL_SECONDS: "30"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  electa_pgdata:
