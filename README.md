@@ -1,8 +1,6 @@
 # Electa Systems — Governance Execution API
 
 > Institutional-grade infrastructure for programmatic corporate governance.
-> Designed for integration with Bloomberg Terminal, Refinitiv Eikon, and prime-brokerage platforms.
-
 ---
 
 ## Architecture
