@@ -267,14 +267,3 @@ electa/
 ```
 
 ---
-
-## Integration Targets
-
-| System | Integration Method |
-|---|---|
-| Bloomberg Terminal | Webhook → B-PIPE / SSE stream |
-| Refinitiv Eikon | SSE → RIC-tagged event enrichment |
-| Risk Engine | Webhook on `governance.result.computed` |
-| Compliance Platform | Audit log polling + `governance.*` webhook filter |
-| Accounting System | Webhook on proposal close for book-of-record update |
-| DTC / Euroclear | Post-close settlement trigger |
